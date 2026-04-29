@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>iStreamed - Watch Movies Free</title>
+    <title>MovieStream - Your Own Streaming Site</title>
     <style>
         * {
             margin: 0;
@@ -13,21 +13,20 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #0f0f0f;
+            background: #0a0a0a;
             color: #fff;
             min-height: 100vh;
         }
 
-        /* Header */
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
             padding: 2rem 1rem;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
         .header h1 {
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 0.5rem;
         }
 
@@ -36,7 +35,6 @@
             font-size: 0.9rem;
         }
 
-        /* Search Section */
         .search-section {
             max-width: 800px;
             margin: -1.5rem auto 0;
@@ -68,22 +66,21 @@
         }
 
         .search-box button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #e50914;
             border: none;
             padding: 0 2rem;
             border-radius: 50px;
             color: white;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
+            transition: transform 0.2s;
         }
 
         .search-box button:hover {
             transform: scale(1.02);
-            opacity: 0.9;
+            background: #f6121d;
         }
 
-        /* Loading State */
         .loading {
             text-align: center;
             padding: 3rem;
@@ -96,7 +93,7 @@
             width: 30px;
             height: 30px;
             border: 3px solid #333;
-            border-top-color: #667eea;
+            border-top-color: #e50914;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin-left: 10px;
@@ -107,13 +104,12 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Movie Results */
         .movie-grid {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 2rem auto;
             padding: 0 1rem;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1.5rem;
         }
 
@@ -129,7 +125,7 @@
         .movie-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border-color: #667eea;
+            border-color: #e50914;
         }
 
         .movie-poster {
@@ -163,7 +159,6 @@
             margin-top: 0.25rem;
         }
 
-        /* Video Player Section */
         .player-container {
             max-width: 1200px;
             margin: 1rem auto;
@@ -185,7 +180,7 @@
             font-weight: 600;
         }
 
-        .close-btn {
+        .close-btn, .back-btn, .add-source-btn {
             background: #333;
             border: none;
             padding: 0.5rem 1rem;
@@ -196,20 +191,28 @@
             transition: background 0.2s;
         }
 
-        .close-btn:hover {
+        .close-btn:hover, .back-btn:hover {
             background: #555;
+        }
+
+        .add-source-btn {
+            background: #e50914;
+        }
+
+        .add-source-btn:hover {
+            background: #f6121d;
         }
 
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             border-radius: 12px;
             background: #000;
         }
 
-        .video-wrapper iframe {
+        .video-wrapper iframe, .video-wrapper video {
             position: absolute;
             top: 0;
             left: 0;
@@ -218,7 +221,6 @@
             border: none;
         }
 
-        /* Error Message */
         .error-message {
             text-align: center;
             padding: 2rem;
@@ -228,7 +230,6 @@
             margin: 1rem;
         }
 
-        /* Footer */
         .footer {
             text-align: center;
             padding: 2rem;
@@ -238,32 +239,65 @@
             margin-top: 2rem;
         }
 
-        /* Back to Browse Button */
-        .back-btn {
-            background: #333;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background 0.2s;
+        /* Admin Panel Styles */
+        .admin-panel {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 1px solid #333;
         }
 
-        .back-btn:hover {
-            background: #555;
+        .admin-panel h4 {
+            margin-bottom: 0.5rem;
+            color: #e50914;
+        }
+
+        .source-input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .source-input-group input {
+            flex: 1;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            padding: 0.5rem;
+            border-radius: 6px;
+            color: white;
+        }
+
+        .source-list {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .source-list span {
+            display: inline-block;
+            background: #2a2a2a;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin: 0.2rem;
+            cursor: pointer;
+        }
+
+        .source-list span:hover {
+            background: #e50914;
+            color: white;
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>🎬 MovieStream</h1>
-        <p>Search any movie and watch instantly</p>
+        <p>Your own streaming platform - Add your video sources</p>
     </div>
 
     <div class="search-section">
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search for a movie... (e.g., Inception, Avengers, The Matrix)" onkeypress="if(event.key === 'Enter') searchMovies()">
+            <input type="text" id="searchInput" placeholder="Search for a movie... (e.g., Inception, Avengers)" onkeypress="if(event.key === 'Enter') searchMovies()">
             <button onclick="searchMovies()">Search</button>
         </div>
     </div>
@@ -271,39 +305,65 @@
     <div id="results"></div>
 
     <div class="footer">
-        <p>Powered by TMDB & VidSrc | For educational purposes only</p>
+        <p>Add your own video sources (MP4, M3U8, YouTube, embed URLs) to each movie</p>
     </div>
 
     <script>
-        // IMPORTANT: Replace this with your actual TMDB API key
-        // Get a free key at: https://www.themoviedb.org/signup
+        // Your TMDB API Key
         const TMDB_API_KEY = 'e70e756fcdc725af4c865ce9dd0053e9';
         
         const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
         const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
         
-        // VidSrc embed URL patterns (multiple sources for redundancy)
-        const VIDEO_SOURCES = [
-            (id) => `https://vidsrc.dev/embed/movie/${id}`,
-            (id) => `https://vidsrc.net/embed/movie/${id}`,
-            (id) => `https://vidsrc.to/embed/movie/${id}`,
-            (id) => `https://embed.su/embed/movie/${id}`,
-            (id) => `https://2embed.sx/embed/movie/${id}`
-        ];
+        // Store video sources for each movie (this saves in your browser)
+        let videoSources = {};
+        
+        // Load saved sources from localStorage
+        function loadVideoSources() {
+            const saved = localStorage.getItem('movie_video_sources');
+            if (saved) {
+                videoSources = JSON.parse(saved);
+            }
+        }
+        
+        // Save sources to localStorage
+        function saveVideoSources() {
+            localStorage.setItem('movie_video_sources', JSON.stringify(videoSources));
+        }
+        
+        // Add video source for a movie
+        function addVideoSource(movieId, sourceUrl, sourceType = 'embed') {
+            if (!videoSources[movieId]) {
+                videoSources[movieId] = [];
+            }
+            videoSources[movieId].push({
+                url: sourceUrl,
+                type: sourceType,
+                dateAdded: new Date().toISOString()
+            });
+            saveVideoSources();
+            return videoSources[movieId];
+        }
+        
+        // Remove video source
+        function removeVideoSource(movieId, index) {
+            if (videoSources[movieId]) {
+                videoSources[movieId].splice(index, 1);
+                if (videoSources[movieId].length === 0) {
+                    delete videoSources[movieId];
+                }
+                saveVideoSources();
+            }
+        }
         
         let currentMovies = [];
-        let isPlaying = false;
-
+        let currentMovieId = null;
+        
         async function searchMovies() {
             const query = document.getElementById('searchInput').value.trim();
             
             if (!query) {
                 showError('Please enter a movie name');
-                return;
-            }
-            
-            if (!TMDB_API_KEY || TMDB_API_KEY === 'YOUR_TMDB_API_KEY_HERE') {
-                showError('Please set your TMDB API key in the code. Get a free key from https://www.themoviedb.org/signup');
                 return;
             }
             
@@ -315,24 +375,22 @@
                 const data = await response.json();
                 
                 if (data.results && data.results.length > 0) {
-                    currentMovies = data.results.slice(0, 20); // Show top 20 results
+                    currentMovies = data.results.slice(0, 20);
                     displayMovies(currentMovies);
                 } else {
                     showError('No movies found. Try a different search term.');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                showError('Failed to search movies. Check your API key or internet connection.');
+                showError('Failed to search movies. Check your internet connection.');
             }
         }
         
         function displayMovies(movies) {
-            isPlaying = false;
-            
             const html = `
                 <div class="movie-grid">
                     ${movies.map(movie => `
-                        <div class="movie-card" onclick="playMovie(${movie.id}, '${escapeHtml(movie.title)}')">
+                        <div class="movie-card" onclick="showMovieDetails(${movie.id}, '${escapeHtml(movie.title)}', ${movie.release_date ? `'${movie.release_date.split('-')[0]}'` : 'null'}, ${movie.vote_average || 0}, '${movie.poster_path || ''}', '${escapeHtml(movie.overview || 'No description available.')}')">
                             <img class="movie-poster" src="${movie.poster_path ? TMDB_IMAGE_BASE + movie.poster_path : 'https://via.placeholder.com/300x450?text=No+Poster'}" alt="${escapeHtml(movie.title)}">
                             <div class="movie-info">
                                 <div class="movie-title">${escapeHtml(movie.title)}</div>
@@ -347,80 +405,170 @@
             document.getElementById('results').innerHTML = html;
         }
         
-        function playMovie(movieId, movieTitle) {
-            isPlaying = true;
-            
-            // Try multiple video sources (first one that works usually loads)
-            const embedUrls = VIDEO_SOURCES.map(source => source(movieId));
-            const primaryUrl = embedUrls[0];
+        function showMovieDetails(movieId, title, year, rating, posterPath, overview) {
+            currentMovieId = movieId;
+            const posterUrl = posterPath ? TMDB_IMAGE_BASE + posterPath : 'https://via.placeholder.com/300x450?text=No+Poster';
+            const sources = videoSources[movieId] || [];
             
             const html = `
-                <div class="player-container" id="playerContainer" style="display: block;">
-                    <div class="player-header">
-                        <div class="player-title">🎬 Now Playing: ${escapeHtml(movieTitle)}</div>
-                        <div>
-                            <button class="back-btn" onclick="searchMovies()">🔍 New Search</button>
-                            <button class="close-btn" onclick="closePlayer()">✕ Close Player</button>
+                <div style="max-width: 1200px; margin: 2rem auto; padding: 0 1rem;">
+                    <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
+                        <img src="${posterUrl}" style="width: 200px; border-radius: 12px;" alt="${escapeHtml(title)}">
+                        <div style="flex: 1;">
+                            <h2>${escapeHtml(title)} (${year || 'N/A'})</h2>
+                            <div style="color: #f5c518; margin: 0.5rem 0;">⭐ ${rating ? rating.toFixed(1) : 'N/A'}/10</div>
+                            <p style="color: #ccc; line-height: 1.5;">${escapeHtml(overview)}</p>
+                            <button class="back-btn" onclick="searchMovies()" style="margin-top: 1rem;">← Back to Search</button>
                         </div>
                     </div>
-                    <div class="video-wrapper">
-                        <iframe 
-                            src="${primaryUrl}"
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
+                    
+                    <div class="admin-panel">
+                        <h4>🎥 ADD VIDEO SOURCE (Your own MP4, M3U8, or embed URL)</h4>
+                        <div class="source-input-group">
+                            <input type="text" id="newSourceUrl" placeholder="Enter video URL (MP4, M3U8, YouTube, Vimeo, or embed link)" style="flex: 1;">
+                            <select id="sourceType" style="background: #2a2a2a; border: 1px solid #444; color: white; border-radius: 6px; padding: 0.5rem;">
+                                <option value="embed">Embed URL</option>
+                                <option value="mp4">Direct MP4</option>
+                                <option value="m3u8">M3U8 (HLS Stream)</option>
+                                <option value="youtube">YouTube</option>
+                            </select>
+                            <button class="add-source-btn" onclick="addAndPlaySource()">+ Add & Play</button>
+                        </div>
+                        <div class="source-list">
+                            <strong>Your video sources for this movie:</strong><br>
+                            ${sources.length === 0 ? '<span style="color: #666;">No video sources added yet. Add one above!</span>' : 
+                                sources.map((source, idx) => `
+                                    <span onclick="playSpecificSource(${movieId}, ${idx})" title="Click to play: ${source.url.substring(0, 50)}...">
+                                        🎬 Source ${idx + 1} (${source.type}) 
+                                        <span onclick="event.stopPropagation(); removeSource(${movieId}, ${idx})" style="color: #ff6b6b; margin-left: 5px;">❌</span>
+                                    </span>
+                                `).join('')
+                            }
+                        </div>
                     </div>
-                    <div style="margin-top: 1rem; padding: 0.5rem; background: #1a1a1a; border-radius: 8px; font-size: 0.8rem; color: #888; text-align: center;">
-                        ⚡ If the video doesn't load, try refreshing or <a href="#" onclick="tryAlternateSource(${movieId}, '${escapeHtml(movieTitle)}'); return false;" style="color: #667eea;">click here to try another source</a>
-                    </div>
+                    
+                    <div id="videoPlayerContainer" style="margin-top: 2rem;"></div>
                 </div>
-                <div class="movie-grid" id="movieGridHidden" style="display: none;"></div>
             `;
             
             document.getElementById('results').innerHTML = html;
-            
-            // Scroll to player
-            setTimeout(() => {
-                const player = document.getElementById('playerContainer');
-                if (player) player.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
         }
         
-        function tryAlternateSource(movieId, movieTitle) {
-            // Get all possible sources
-            const embedUrls = VIDEO_SOURCES.map(source => source(movieId));
-            let sourceIndex = 0;
+        function addAndPlaySource() {
+            const url = document.getElementById('newSourceUrl').value.trim();
+            const type = document.getElementById('sourceType').value;
             
-            // Create a message
-            const currentIframe = document.querySelector('.video-wrapper iframe');
-            if (currentIframe && sourceIndex < embedUrls.length - 1) {
-                sourceIndex++;
-                currentIframe.src = embedUrls[sourceIndex];
-                showTempMessage('Trying alternative video source...');
+            if (!url) {
+                alert('Please enter a video URL');
+                return;
             }
+            
+            addVideoSource(currentMovieId, url, type);
+            playSpecificSource(currentMovieId, videoSources[currentMovieId].length - 1);
+            document.getElementById('newSourceUrl').value = '';
         }
         
-        function showTempMessage(message) {
-            const msgDiv = document.createElement('div');
-            msgDiv.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: #333; color: white; padding: 10px 20px; border-radius: 8px; z-index: 1000; animation: fadeOut 3s forwards;';
-            msgDiv.textContent = message;
-            document.body.appendChild(msgDiv);
-            setTimeout(() => msgDiv.remove(), 3000);
-        }
-        
-        function closePlayer() {
-            if (currentMovies.length > 0) {
-                displayMovies(currentMovies);
+        function playSpecificSource(movieId, sourceIndex) {
+            const sources = videoSources[movieId];
+            if (!sources || !sources[sourceIndex]) {
+                alert('Source not found');
+                return;
+            }
+            
+            const source = sources[sourceIndex];
+            let videoHtml = '';
+            
+            if (source.type === 'youtube') {
+                // Extract YouTube video ID
+                let videoId = source.url;
+                if (source.url.includes('youtube.com/watch?v=')) {
+                    videoId = source.url.split('v=')[1].split('&')[0];
+                } else if (source.url.includes('youtu.be/')) {
+                    videoId = source.url.split('youtu.be/')[1].split('?')[0];
+                } else {
+                    videoId = source.url;
+                }
+                videoHtml = `
+                    <div class="player-container" style="display: block;">
+                        <div class="player-header">
+                            <div class="player-title">🎬 Now Playing (YouTube Source)</div>
+                            <button class="close-btn" onclick="document.getElementById('videoPlayerContainer').innerHTML = ''">Close Player</button>
+                        </div>
+                        <div class="video-wrapper">
+                            <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                `;
+            } else if (source.type === 'mp4') {
+                videoHtml = `
+                    <div class="player-container" style="display: block;">
+                        <div class="player-header">
+                            <div class="player-title">🎬 Now Playing (MP4 Source)</div>
+                            <button class="close-btn" onclick="document.getElementById('videoPlayerContainer').innerHTML = ''">Close Player</button>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls autoplay>
+                                <source src="${source.url}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    </div>
+                `;
+            } else if (source.type === 'm3u8') {
+                videoHtml = `
+                    <div class="player-container" style="display: block;">
+                        <div class="player-header">
+                            <div class="player-title">🎬 Now Playing (HLS Stream)</div>
+                            <button class="close-btn" onclick="document.getElementById('videoPlayerContainer').innerHTML = ''">Close Player</button>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls autoplay>
+                                <source src="${source.url}" type="application/x-mpegURL">
+                                Your browser does not support HLS streams.
+                            </video>
+                        </div>
+                    </div>
+                    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"><\/script>
+                    <script>
+                        const video = document.querySelector('#videoPlayerContainer video');
+                        if (video && Hls.isSupported()) {
+                            const hls = new Hls();
+                            hls.loadSource('${source.url}');
+                            hls.attachMedia(video);
+                        }
+                    <\/script>
+                `;
             } else {
-                document.getElementById('results').innerHTML = '';
-                showTempMessage('Search for a movie to get started');
+                // embed type - just iframe
+                videoHtml = `
+                    <div class="player-container" style="display: block;">
+                        <div class="player-header">
+                            <div class="player-title">🎬 Now Playing (Embed Source)</div>
+                            <button class="close-btn" onclick="document.getElementById('videoPlayerContainer').innerHTML = ''">Close Player</button>
+                        </div>
+                        <div class="video-wrapper">
+                            <iframe src="${source.url}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                `;
             }
-            isPlaying = false;
+            
+            document.getElementById('videoPlayerContainer').innerHTML = videoHtml;
+        }
+        
+        function removeSource(movieId, index) {
+            if (confirm('Remove this video source?')) {
+                removeVideoSource(movieId, index);
+                // Refresh the view
+                const movie = currentMovies.find(m => m.id === movieId);
+                if (movie) {
+                    showMovieDetails(movieId, movie.title, movie.release_date?.split('-')[0], movie.vote_average, movie.poster_path, movie.overview);
+                }
+            }
         }
         
         function showLoading() {
-            document.getElementById('results').innerHTML = '<div class="loading">Searching for movies</div>';
+            document.getElementById('results').innerHTML = '<div class="loading">Loading movies...</div>';
         }
         
         function showError(message) {
@@ -428,24 +576,14 @@
         }
         
         function escapeHtml(text) {
+            if (!text) return '';
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
         
-        // Optional: Popular movies on page load
+        // Load popular movies on page load
         async function loadPopularMovies() {
-            if (!TMDB_API_KEY || TMDB_API_KEY === 'e70e756fcdc725af4c865ce9dd0053e9') {
-                document.getElementById('results').innerHTML = `
-                    <div class="error-message">
-                        ⚠️ Setup Required: Get your free TMDB API key at 
-                        <a href="https://www.themoviedb.org/signup" target="_blank" style="color: #667eea;">themoviedb.org</a>
-                        and replace 'YOUR_TMDB_API_KEY_HERE' in the code.
-                    </div>
-                `;
-                return;
-            }
-            
             showLoading();
             try {
                 const url = `${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}&language=en-US&page=1`;
@@ -456,7 +594,7 @@
                     displayMovies(currentMovies);
                 }
             } catch (error) {
-                console.error('Error loading popular movies:', error);
+                console.error('Error:', error);
                 document.getElementById('results').innerHTML = `
                     <div class="error-message">
                         ℹ️ Enter a movie name in the search box above to get started.
@@ -465,7 +603,8 @@
             }
         }
         
-        // Load popular movies when page loads
+        // Initialize
+        loadVideoSources();
         loadPopularMovies();
     </script>
 </body>
